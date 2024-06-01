@@ -1,3 +1,6 @@
+require 'net/http'
+require 'json'
+
 class ReportsController < ApplicationController
   before_action :set_report, only: %i[ show edit update destroy ]
 
@@ -59,6 +62,71 @@ class ReportsController < ApplicationController
       format.html { redirect_to reports_url, notice: "Report was successfully destroyed." }
       format.json { head :no_content }
     end
+  end
+
+
+  def generate_route
+    data = {
+      "police_station": {
+        "latitude": 1.4294854895835194,
+        "longitude": 103.84014800478174
+      },
+      "hotspots": [
+        {
+          "latitude": 1.4210816436674003,
+          "longitude": 103.84761568650755
+        },
+        {
+          "latitude": 1.4251709344391268,
+          "longitude": 103.84476571069965
+        },
+        {
+          "latitude": 1.424407006907169,
+          "longitude": 103.84098276837128
+        },
+        {
+          "latitude": 1.425038977195743,
+          "longitude": 103.8298203106997
+        },
+        {
+          "latitude": 1.4182852241270225,
+          "longitude": 103.8410208665204
+        },
+        {
+          "latitude": 1.4143117474473463,
+          "longitude": 103.8307012376845
+        },
+        {
+          "latitude": 1.4239741964823807,
+          "longitude": 103.83678755911649
+        },
+        {
+          "latitude": 1.4268853888536341,
+          "longitude": 103.84922392217099
+        },
+        {
+          "latitude": 1.4314624730771077,
+          "longitude": 103.84505305302795
+        },
+        {
+          "latitude": 1.4156091006464437,
+          "longitude": 103.83967627842229
+        }
+      ],
+      "start_time": "2024-05-30T00:00:00.000Z",
+      "end_time": "2024-05-31T06:00:00.000Z"
+    }
+
+    url = URI.parse('https://patrol-pal-route-optimisation-gateway-6vhrt1mo.an.gateway.dev/optimise-route?key=AIzaSyARTCBV8pAR9OwEGjutqbosWJxN5xolCik')
+    req = Net::HTTP::Post.new(url.request_uri)
+    req.set_form_data(data)
+    http = Net::HTTP.new(url.host, url.port)
+    http.use_ssl = (url.scheme == "https")
+    res = http.request(req)
+    
+    puts 'hello world! 3'
+    puts res
+    puts res.body
   end
 
   private

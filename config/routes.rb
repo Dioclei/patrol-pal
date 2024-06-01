@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   get 'optimise', to: 'patrol#optimise'
   get 'reports', to: 'reports#index'
   get 'api_key', to: 'api_controller#api_key'
-  get 'generate_route', to: 'reports#generate_route'
+  post 'generate_route', to: 'reports#generate_route'
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
